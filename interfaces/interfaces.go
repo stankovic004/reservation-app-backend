@@ -8,6 +8,8 @@ type resComponent struct {
 	hour     int
 	min      int
 	occupied bool
+	location string
+	username string
 }
 
 type User struct {
@@ -17,6 +19,9 @@ type User struct {
 }
 
 type Reservation struct {
-	Date     time.Time    `json:"date"`
-	Schedule resComponent `json:"schedule"`
+	User     string    `json:"user"`
+	Time     string    `json:"time"`
+	Location string    `json:"location"`
+	Occupied bool      `json:"occupied"`
+	Date     time.Time `json:"date"`
 }

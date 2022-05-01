@@ -45,3 +45,21 @@ func LoginAPI(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 	w.WriteHeader(http.StatusAccepted)
 }
+
+func ReserveAPI(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	var reservation interfaces.Reservation
+
+	err := json.NewDecoder(r.Body).Decode(&reservation)
+	if err != nil {
+		log.Println("can't reserve this schedule : ", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	err = repo.Reserve(reservation)
+	if err != nil {
+		log.Println("can't reserve this schedule: ", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusAccepted)
+}

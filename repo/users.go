@@ -33,3 +33,18 @@ func Login(loginUser interfaces.User) error {
 
 	return err
 }
+
+func Reserve(reservation interfaces.Reservation) error {
+	fmt.Println(dbGlobal)
+	result := 0
+	err := dbGlobal.QueryRow(sqlStatements["reserve"], reservation.User, reservation.Date, reservation.Time, reservation.Location).Scan(&result)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	if result == 0 {
+		return errors.New("greška kod rezervacije")
+	}
+
+	return err
+}
