@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	_ "github.com/lib/pq"
+	"github.com/stankovic004/rezervacija/interfaces"
 )
 
 const (
@@ -36,4 +37,29 @@ func InitConn() error {
 	}
 	fmt.Println("Successfully connected!")
 	return nil
+}
+
+func GetLocations() ([]interfaces.Location, error) {
+	var locations []interfaces.Location
+	rows, err := dbGlobal.Query(sqlStatements["get_locations"])
+	if err != nil {
+		fmt.Println(err)
+		return locations, err
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		var id int
+		var name string
+		var lon string
+		var lat string
+		err = rows.Scan(&id, &name, &lon, &lat)
+		if err != nil {
+			// handle this error
+			fmt.Println(err)
+		}
+		l := interfaces.Location{id, name, lat, lon}
+		locations = append(locations, l)
+	}
+	return locations, err
 }

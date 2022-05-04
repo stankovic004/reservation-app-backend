@@ -25,3 +25,10 @@ type Reservation struct {
 	Occupied bool      `json:"occupied"`
 	Date     time.Time `json:"date"`
 }
+
+type Location struct {
+	Id   int    `json:"id"`
+	Name string `json:"email"`
+	Lat  string `json:"lat"`
+	Lon  string `json:"lon"`
+}
