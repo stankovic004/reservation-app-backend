@@ -28,7 +28,7 @@ type Reservation struct {
 
 type Location struct {
 	Id   int    `json:"id"`
-	Name string `json:"email"`
+	Name string `json:"name"`
 	Lat  string `json:"lat"`
 	Lon  string `json:"lon"`
 }
