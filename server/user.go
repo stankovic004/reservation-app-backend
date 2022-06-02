@@ -37,13 +37,18 @@ func LoginAPI(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	err = repo.Login(loginUser)
+	user, err := repo.Login(loginUser)
 	if err != nil {
 		log.Println("can't login user: ", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	w.WriteHeader(http.StatusAccepted)
+	err = json.NewEncoder(w).Encode(user)
+	if err != nil {
+		log.Println("can't encode user: ", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 }
 
 func ReserveAPI(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
