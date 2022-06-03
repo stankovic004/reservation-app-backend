@@ -3,6 +3,7 @@ package repo
 import (
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/stankovic004/rezervacija/interfaces"
 )
@@ -36,16 +37,26 @@ func Login(loginUser interfaces.User) (interfaces.User, error) {
 }
 
 func Reserve(reservation interfaces.Reservation) error {
-	fmt.Println(dbGlobal)
-	result := 0
-	err := dbGlobal.QueryRow(sqlStatements["reserve"], reservation.User, reservation.Date, reservation.Time, reservation.Location).Scan(&result)
+	for i := 0; i < len(reservation.Dates); i++ {
+		rDate := reservation.Dates[i]
+		timeReserved := time.Date(rDate.Year, time.Month(rDate.Month), rDate.Day, rDate.Hour, rDate.Min, 0, 0,time.UTC)
+		fmt.Println(timeReserved)
+		_, err := dbGlobal.Query(sqlStatements["reserve"], reservation.User, reservation.Location, reservation.Dates)
+		if err != nil {
+			fmt.Println(err)
+			return err
+		}
+
+	}
+	return nil
+}
+
+
+func AddLocation(location interfaces.Location) error {
+	_, err := dbGlobal.Query(sqlStatements["addLocation"], location.Name, location.Lat, location.Lon)
 	if err != nil {
 		fmt.Println(err)
 		return err
 	}
-	if result == 0 {
-		return errors.New("greška kod rezervacije")
-	}
-
 	return err
 }

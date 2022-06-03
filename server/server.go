@@ -17,6 +17,8 @@ func StartServer() {
 	router.POST("/register", RegisterAPI)
 	router.POST("/login", LoginAPI)
 	router.GET("/locations", GetLocationsAPI)
+	router.POST("/addLocation", AddLocationAPI)
+	router.POST("/reservations", AddReservationsAPI)
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:3000", "http://foo.com:8080", "."},

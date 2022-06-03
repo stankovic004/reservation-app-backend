@@ -51,15 +51,15 @@ func LoginAPI(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 }
 
-func ReserveAPI(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func AddReservationsAPI(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	var reservation interfaces.Reservation
-
 	err := json.NewDecoder(r.Body).Decode(&reservation)
 	if err != nil {
-		log.Println("can't reserve this schedule : ", err)
+		log.Println("can't decode this schedule : ", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	log.Println(reservation)
 	err = repo.Reserve(reservation)
 	if err != nil {
 		log.Println("can't reserve this schedule: ", err)
@@ -67,4 +67,30 @@ func ReserveAPI(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		return
 	}
 	w.WriteHeader(http.StatusAccepted)
+}
+
+func AddLocationAPI(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	
+	var location interfaces.Location
+	
+	err := json.NewDecoder(r.Body).Decode(&location)
+	if err != nil {
+		log.Println("can't add location ", err)
+		log.Println(location.Name)
+		log.Println(location.Lon)
+		log.Println(location.Lat)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	err = repo.AddLocation(location)
+	if err != nil {
+		log.Println(location.Name)
+		log.Println(location.Lon)
+		log.Println(location.Lat)
+		log.Println("can't add location : ", err)
+		
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusCreated)
 }

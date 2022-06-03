@@ -1,9 +1,5 @@
 package interfaces
 
-import (
-	"time"
-)
-
 type resComponent struct {
 	hour     int
 	min      int
@@ -19,12 +15,17 @@ type User struct {
 	Role string `json:"role,omitempty"`
 }
 
+type ReservationDate struct {
+	Year int	`json:"year"`
+	Month int	`json:"month"`
+	Day int		`json:"day"`
+	Hour int	`json:"hour"`
+	Min int		`json:"min"`
+}
 type Reservation struct {
 	User     string    `json:"user"`
-	Time     string    `json:"time"`
 	Location string    `json:"location"`
-	Occupied bool      `json:"occupied"`
-	Date     time.Time `json:"date"`
+	Dates     []ReservationDate `json:"dates"`
 }
 
 type Location struct {
