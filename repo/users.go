@@ -11,7 +11,6 @@ import (
 func Register(newUser interfaces.User) error {
 	fmt.Println(dbGlobal)
 	_, err := dbGlobal.Query(sqlStatements["register"], newUser.Email, newUser.Username, newUser.Password, "user")
-	// res, err := dbConn.Exec("insert into users (email, username, password, created_on) VALUES ('mail@gmail.com', 'bravo', 'sifra', NOW());")
 	if err != nil {
 		fmt.Println(err)
 		return err
@@ -41,7 +40,7 @@ func Reserve(reservation interfaces.Reservation) error {
 		rDate := reservation.Dates[i]
 		timeReserved := time.Date(rDate.Year, time.Month(rDate.Month), rDate.Day, rDate.Hour, rDate.Min, 0, 0,time.UTC)
 		fmt.Println(timeReserved)
-		_, err := dbGlobal.Query(sqlStatements["reserve"], reservation.User, reservation.Location, reservation.Dates)
+		_, err := dbGlobal.Query(sqlStatements["reserve"], reservation.User, reservation.Location, timeReserved)
 		if err != nil {
 			fmt.Println(err)
 			return err
@@ -49,6 +48,7 @@ func Reserve(reservation interfaces.Reservation) error {
 
 	}
 	return nil
+	
 }
 
 

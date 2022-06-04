@@ -63,3 +63,28 @@ func GetLocations() ([]interfaces.Location, error) {
 	}
 	return locations, err
 }
+
+func GetReservations() ([]interfaces.GetReservationType, error) {
+	var reservations []interfaces.GetReservationType
+	rows, err := dbGlobal.Query(sqlStatements["get_reservations"])
+	if err != nil {
+		fmt.Println(err)
+		return reservations, err
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		var id int
+		var user string
+		var location string
+		var dates string
+		err = rows.Scan(&id, &user, &location, &dates)
+		if err != nil {
+			// handle this error
+			fmt.Println(err)
+		}
+		l := interfaces.GetReservationType{id, user, location, dates}
+		reservations = append(reservations, l)
+	}
+	return reservations, err
+}

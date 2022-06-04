@@ -11,4 +11,6 @@ var sqlStatements = map[string]string{
 
 	"addLocation": `INSERT INTO locations (name, lat, lon) VALUES ($1, $2, $3);`,
 
-	"get_locations": "select id, name, lon, lat from locations"}
+	"get_locations": "select id, name, lon, lat from locations",
+
+	"get_reservations": "select id, username, location, date from reservations"}

@@ -25,7 +25,7 @@ type ReservationDate struct {
 type Reservation struct {
 	User     string    `json:"user"`
 	Location string    `json:"location"`
-	Dates     []ReservationDate `json:"dates"`
+	Dates    []ReservationDate `json:"dates"`
 }
 
 type Location struct {
@@ -33,4 +33,11 @@ type Location struct {
 	Name string `json:"name"`
 	Lat  string `json:"lat"`
 	Lon  string `json:"lon"`
+}
+
+type GetReservationType struct{
+	Id		 int	   `json:"id"`
+	User     string    `json:"user"`
+	Location string    `json:"location"`
+	Dates    string    `json:"dates"`
 }

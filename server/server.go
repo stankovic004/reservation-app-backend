@@ -19,6 +19,7 @@ func StartServer() {
 	router.GET("/locations", GetLocationsAPI)
 	router.POST("/addLocation", AddLocationAPI)
 	router.POST("/reservations", AddReservationsAPI)
+	router.GET("/reservations", GetReservationsAPI)
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:3000", "http://foo.com:8080", "."},
@@ -50,4 +51,21 @@ func GetLocationsAPI(w http.ResponseWriter, r *http.Request, _ httprouter.Params
 
 	}
 	w.WriteHeader(http.StatusOK)
+}
+
+func GetReservationsAPI(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	reservations, err := repo.GetReservations()
+	if err != nil {
+		log.Println("error: ", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	fmt.Println(reservations)
+	err = json.NewEncoder(w).Encode(reservations)
+	if err != nil {
+		log.Println(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+
+	}
 }
